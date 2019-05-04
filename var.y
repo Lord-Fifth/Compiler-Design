@@ -25,12 +25,14 @@ int val;
 %union{
 int no;
 char var[10];
+char code[50];
 }
 
 %token <var> id
 %token <no> num 
-%token print EXIT IF ELSE ptable
-%type <no>  start exp assignment term condn
+%token print EXIT IF ELSE ptable FOR
+%type <no>  start exp assignment term condn for_statement
+%type<code> assignment_expr
 %start start
 %left and or 
 %left '>' '<' eq ne ge le 
@@ -48,11 +50,16 @@ start	: EXIT ';'		{exit(0);}
 	| start EXIT ';'	{exit(EXIT_SUCCESS);}
 	| ptable ';' 		{ dis();}
 	|start ptable ';'	{ dis();}
+	| for_statement 	{ ;	}
+	|start for_statement { ; }
 	| condn			{;}
 	|start condn		{;}
         ;
 
-		
+
+for_statement : FOR '(' assignment_expr ';' ')' '{' '}'   { fprintf(yyout,"FOR STATEMENT %s" ,$3); }	
+
+assignment_expr : id '=' exp {  strcpy($$,"ASSIGNMENT"); }
 assignment : id '=' exp  { {installid($1,$3);} fprintf(yyout,"%s := %d;\n %s := %s;\n\n",reg[0],$3,$1,reg[0]); ; }
 			;
  condn	: IF '(' exp ')' '{' id '=' exp ';' '}' ELSE '{' id '=' exp ';''}' 	{ if($3>0){installid($6,$8);}else{installid($13,$15);} 

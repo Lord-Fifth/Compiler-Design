@@ -52,12 +52,13 @@ extern int yydebug;
     IF = 262,
     ELSE = 263,
     ptable = 264,
-    and = 265,
-    or = 266,
-    eq = 267,
-    ne = 268,
-    ge = 269,
-    le = 270
+    FOR = 265,
+    and = 266,
+    or = 267,
+    eq = 268,
+    ne = 269,
+    ge = 270,
+    le = 271
   };
 #endif
 
@@ -70,8 +71,9 @@ union YYSTYPE
 
 int no;
 char var[10];
+char code[50];
 
-#line 75 "var.tab.h" /* yacc.c:1909  */
+#line 77 "var.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

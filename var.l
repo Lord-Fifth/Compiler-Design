@@ -15,7 +15,8 @@
 "!="				{	return ne;	}
 "<="				{	return le;	}
 ">="				{	return ge;	}
-"exit"				{	return EXIT;	} 		
+"exit"				{	return EXIT;	} 	
+"for"               {   return FOR;    }	
 "print"				{	return print;	} 
 "ptable"			{ 	return ptable;	}
 [0-9]+				{	yylval.no=atoi(yytext) ; return num;	}
