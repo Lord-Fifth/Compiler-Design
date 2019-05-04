@@ -1,0 +1,21 @@
+if nz t1;
+t2 := 5;
+id := t2;
+
+if nz t1;
+t2 := 5;
+id := t2;
+
+t1 := 5;
+ x := t1;
+
+t1 := 5;
+ x := t1;
+
+if z t1 goto _LABEL;
+t2 := 5;
+print t2;
+_LABEL : else;
+t3 := 34;
+print t3;
+
