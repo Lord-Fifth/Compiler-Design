@@ -1,8 +1,8 @@
 %{
 #include "var.tab.h"
-#include<string.h>
+#include <string.h>
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
 %}
 
@@ -17,13 +17,15 @@
 ">="				{	return ge;	}
 "exit"				{	return EXIT;	} 	
 "for"               {   return FOR;    }	
+"while"             {   return WHILE;   }
+"do"                {   return DO;  }
 "print"				{	return print;	} 
 "ptable"			{ 	return ptable;	}
 [0-9]+				{	yylval.no=atoi(yytext) ; return num;	}
 [a-z]([a-z]|[0-9])*		{	strcpy(yylval.var,yytext); return id;} 
 [ \t\n]				;
 [- + ; ( ) * / = < > { } % ]			{ return *yytext;}
-.					{ printf("invalid char.");}
+.					{ printf("Invalid Char.");}
 %%
 
 

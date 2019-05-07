@@ -10,11 +10,13 @@ void installid(char s[],int n);
 int getid(char s[]);
 void dis();
 int relop(int a, int b, int c);
+int val, val1, val2, inc;
 
 char reg[7][10]={"t1","t2","t3","t4","t5","t6"};
 
 extern FILE *yyout;
 extern char *yylex();
+char buffer[30];
 
 struct table{
 char name[10];
@@ -30,9 +32,9 @@ char code[50];
 
 %token <var> id
 %token <no> num 
-%token print EXIT IF ELSE ptable FOR
-%type <no>  start exp assignment term condn for_statement
-%type<code> assignment_expr
+%token print EXIT IF ELSE ptable FOR WHILE DO
+%type <no>  start exp assignment term condn for_statement while_statement do_statement
+%type <code> assignment_expr
 %start start
 %left and or 
 %left '>' '<' eq ne ge le 
@@ -49,17 +51,98 @@ start	: EXIT ';'		{exit(0);}
 	| start assignment ';'	{;}
 	| start EXIT ';'	{exit(EXIT_SUCCESS);}
 	| ptable ';' 		{ dis();}
-	|start ptable ';'	{ dis();}
+	| start ptable ';'	{ dis();}
 	| for_statement 	{ ;	}
-	|start for_statement { ; }
+	| start for_statement { ; }
+	| while_statement	{ ; }
+	| start while_statement	{ ; }
+	| do_statement	{ ; }
+	| start do_statement	{ ; }
 	| condn			{;}
-	|start condn		{;}
+	| start condn		{;}
         ;
 
 
-for_statement : FOR '(' assignment_expr ';' ')' '{' '}'   { fprintf(yyout,"FOR STATEMENT %s" ,$3); }	
+  for_statement : FOR '(' id '=' exp  ';' id '<' num ';' id '=' id '+' num ')' '{' print num ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
+                           for(;val<val1;  )
+                          {  
+	                  	val=val+inc;
+	           		printf("%d",val2); 
+                          }
+		          }
+     | FOR '(' id '=' exp  ';' id le num ';' id '=' id '+' num ')' '{' print num ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
+                           for(;val<=val1;  )
+                          {  
+	                  	val=val+inc;
+	           		printf("%d",val2); 
+                          }
+		          }
+      | FOR '(' id '=' exp  ';' id '>' num ';' id '=' id '-' num ')' '{' print num ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
+                           for(;val>val1;  )
+                          {  
+	                  	val=val-inc;
+	           		printf("%d",val2); 
+                          }
+		          }
+     | FOR '(' id '=' exp  ';' id ge num ';' id '=' id '-' num ')' '{' print num ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
+                           for(;val>=val1;  )
+                          {  
+	                  	val=val-inc;
+	           		printf("%d",val2); 
+                          }
+		          }
+     | FOR '(' id '=' exp  ';' id '<' num ';' id '=' id '+' num ')' '{' print id ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=getid($19); inc=$15; 
+                           for(;val<val1;  )
+                          {  
+	                  	val=val+inc;
+	           		printf("%d",val); 
+                          }
+		          }
+     | FOR '(' id '=' exp  ';' id le num ';' id '=' id '+' num ')' '{' print id ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=getid($19); inc=$15; 
+                           for(;val<=val1;  )
+                          {  
+	                  	val=val+inc;
+	           		printf("%d",val); 
+                          }
+		          }
+      | FOR '(' id '=' exp  ';' id '>' num ';' id '=' id '-' num ')' '{' print id ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=getid($19); inc=$15; 
+                           for(;val>val1;  )
+                          {  
+	                  	val=val-inc;
+	           		    printf("%d",val); 
+                          }
+		          }
+     | FOR '(' id '=' exp  ';' id ge num ';' id '=' id '-' num ')' '{' print id ';' '}' 
+        {  {installid($3,$5);} val=getid($3);val1=$9;val2=getid($19); inc=$15; 
+                           for(;val>=val1;  )
+                          {  
+	                  	val=val-inc;
+	           		printf("%d",val); 
+                          }
+		          }
+      ;
 
-assignment_expr : id '=' exp {  strcpy($$,"ASSIGNMENT"); }
+do_statement	: DO '{' print exp ';' id '=' exp '+' exp ';' '}' WHILE '(' exp '<' exp ')' ';' 
+{ int n=$15;do{printf("Printing: %d\n",n);n=n+$10; }while(n<=$17);installid($6,n); 
+fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
+;
+
+while_statement : WHILE '(' exp '>' exp ')' '{' print exp ';' exp '=' exp '-' exp ';' '}' {int loopvar=$11; while(loopvar>$5){if($9==$11){printf("Printing: %d\n",loopvar);}
+	else {printf("printing: %d\n",$9);} loopvar=loopvar-$15;}}
+	| WHILE '(' exp '<' exp ')' '{' print exp ';' exp '=' exp '+' exp ';' '}' {int loopvar=$11; 		while(loopvar<$5){if($9==$11){printf("Printing: %d\n",loopvar);}
+	else {printf("printing: %d\n",$9);} loopvar=loopvar+$15;}}
+	| WHILE '(' exp ne exp ')' '{' print exp ';' exp '=' exp '+' exp ';'  '}' {int loopvar=$11; 				while(loopvar!=$5){if($9==$11){printf("Printing: %d\n",loopvar);}
+	else {printf("printing: %d\n",$9);} loopvar=loopvar+$15;}}
+
+	; 
+
 assignment : id '=' exp  { {installid($1,$3);} fprintf(yyout,"%s := %d;\n %s := %s;\n\n",reg[0],$3,$1,reg[0]); ; }
 			;
  condn	: IF '(' exp ')' '{' id '=' exp ';' '}' ELSE '{' id '=' exp ';''}' 	{ if($3>0){installid($6,$8);}else{installid($13,$15);} 
@@ -81,18 +164,18 @@ fprintf(yyout,"if nz %s; \n%s := %d \nPrint %s",reg[0],reg[1],$7,reg[1]) ; }
 exp    	: term                 { {$$ = $1;} /*fprintf(yyout,"%s := %d;\n ",reg[0],$1);*/ ; } 
        	| exp '+' exp          { {$$ = $1 + $3;} /*fprintf(yyout,"%s := %d + %d;\n ",reg[0],$1,$3);*/ ; } 
        	| exp '-' exp          { {$$ = $1 - $3;} /*fprintf(yyout,"%s := %d - %d;\n ",reg[0],$1,$3);*/ ; }
-	| exp '*' exp	       { {$$ = $1 * $3;} /*fprintf(yyout,"%s := %d * %d;\n ",reg[0],$1,$3);*/ ; }
-	| exp '/' exp	       { {$$ = $1 / $3;} /*fprintf(yyout,"%s := %d / %d;\n ",reg[0],$1,$3);*/ ; }
-	| exp '%'exp		{ {$$= $1 % $3;}}	
-	| exp '>' exp		{ {$$ =relop($1,$3,1);} /*fprintf(yyout,"%s := %c > %d;\n ",reg[0],$1,$3); */;} 
-	| exp '<' exp		{ {$$ =relop($1,$3,2);} /*fprintf(yyout,"%s := %c < %d;\n ",reg[0],$1,$3); */;}
-	| exp eq exp		{ {$$ =relop($1,$3,3);} /*fprintf(yyout,"%s := %c eq %d;\n ",reg[0],$1,$3); */;}
-	| exp ne exp		{ {$$ =relop($1,$3,4);} /*fprintf(yyout,"%s := %c neq %d;\n ",reg[0],$1,$3); */;}
-	| exp ge exp		{ {$$ =relop($1,$3,5);} /*fprintf(yyout,"%s := %c ge %d;\n ",reg[0],$1,$3); */;}
-	| exp le exp		{ {$$ =relop($1,$3,6);} /*fprintf(yyout,"%s := %c le %d;\n ",reg[0],$1,$3); */;}
-	| '(' exp ')'		{ {$$ = $2;} /*fprintf(yyout,"%s := %d;\n ",reg[0],$2); */;}
-	| exp and exp		{ {$$ =relop($1,$3,7);} /*fprintf(yyout,"%s := %c and %d;\n ",reg[0],$1,$3);*/ ;}
-	| exp or exp		{ {$$ =relop($1,$3,8);} /*fprintf(yyout,"%s := %c or %d;\n ",reg[0],$1,$3);*/ ;}
+		| exp '*' exp	       { {$$ = $1 * $3;} /*fprintf(yyout,"%s := %d * %d;\n ",reg[0],$1,$3);*/ ; }
+		| exp '/' exp	       { {$$ = $1 / $3;} /*fprintf(yyout,"%s := %d / %d;\n ",reg[0],$1,$3);*/ ; }
+		| exp '%'exp		{ {$$= $1 % $3;}}	
+		| exp '>' exp		{ {$$ =relop($1,$3,1);} /*fprintf(yyout,"%s := %c > %d;\n ",reg[0],$1,$3); */;} 
+		| exp '<' exp		{ {$$ =relop($1,$3,2);} /*fprintf(yyout,"%s := %c < %d;\n ",reg[0],$1,$3); */;}
+		| exp eq exp		{ {$$ =relop($1,$3,3);} /*fprintf(yyout,"%s := %c eq %d;\n ",reg[0],$1,$3); */;}
+		| exp ne exp		{ {$$ =relop($1,$3,4);} /*fprintf(yyout,"%s := %c neq %d;\n ",reg[0],$1,$3); */;}
+		| exp ge exp		{ {$$ =relop($1,$3,5);} /*fprintf(yyout,"%s := %c ge %d;\n ",reg[0],$1,$3); */;}
+		| exp le exp		{ {$$ =relop($1,$3,6);} /*fprintf(yyout,"%s := %c le %d;\n ",reg[0],$1,$3); */;}
+		| '(' exp ')'		{ {$$ = $2;} /*fprintf(yyout,"%s := %d;\n ",reg[0],$2); */;}
+		| exp and exp		{ {$$ =relop($1,$3,7);} /*fprintf(yyout,"%s := %c and %d;\n ",reg[0],$1,$3);*/ ;}
+		| exp or exp		{ {$$ =relop($1,$3,8);} /*fprintf(yyout,"%s := %c or %d;\n ",reg[0],$1,$3);*/ ;}
 	;
 
 term   	: num                {$$ = $1;}
