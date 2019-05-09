@@ -59,8 +59,8 @@ start	: EXIT ';'		{exit(0);}
 	| start do_statement	{ ; }
 	| condn			{;}
 	| start condn		{;}
-	|start factorial	{;}
-	|factorial	{;}
+	| start factorial	{;}
+	| factorial	{;}
 	        ;
 
 
@@ -139,36 +139,42 @@ do_statement	: DO '{' print exp ';' id '=' exp '+' exp ';' '}' WHILE '(' exp '<'
 fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
 ;
 
-while_statement : WHILE '(' exp '>' exp ')' '{' print exp ';' exp '=' exp '-' exp ';' '}' 
+while_statement : WHILE '(' id '>' num ')' '{' print exp ';' exp '=' exp '-' num ';' '}' 
 				  {int loopvar=$11; 
 				   while(loopvar>$5)
+				   {if($9==$11)
+				   		{printf("Printing: %d\n",loopvar); }
+					else 
+						{printf("printing: %d\n",$9);} 
+				    loopvar=loopvar-$15;
+				   } 
+
+fprintf(yyout,"L1: %s = %s > %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s - %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
+ }
+	
+				| WHILE '(' id '<' num ')' '{' print exp ';' exp '=' exp '+' num ';' '}' 
+				  {int loopvar=$11; 		
+				   while(loopvar<$5)
 				   {if($9==$11)
 				   		{printf("Printing: %d\n",loopvar);}
 					else 
 						{printf("printing: %d\n",$9);} 
-					loopvar=loopvar-$15;}
+					loopvar=loopvar+$15;
 				   }
+fprintf(yyout,"L1: %s = %s < %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
+				  }
 
-				| WHILE '(' exp '<' exp ')' '{' print exp ';' exp '=' exp '+' exp ';' '}' 
-					{int loopvar=$11; 		
-					 while(loopvar<$5)
-					 	{if($9==$11)
-					 		{printf("Printing: %d\n",loopvar);}
-						 else 
-						 	{printf("printing: %d\n",$9);} 
-						 loopvar=loopvar+$15;
-						}
-					}
-				| WHILE '(' exp ne exp ')' '{' print exp ';' exp '=' exp '+' exp ';'  '}' 
-					{int loopvar=$11; 				
-					 while(loopvar!=$5)
-					 	{if($9==$11)
-						 	{printf("Printing: %d\n",loopvar);}
+				| WHILE '(' id ne num ')' '{' print exp ';' exp '=' exp '+' num ';'  '}' 
+				  {int loopvar=$11; 				
+				   while(loopvar!=$5)
+				   		{if($9==$11)
+				   			{printf("Printing: %d\n",loopvar);}
 						 else 
 						 	{printf("printing: %d\n",$9);}
-						loopvar=loopvar+$15;
+						 loopvar=loopvar+$15;
 						}
-					}
+fprintf(yyout,"L1: %s = %s ne %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
+				  }
 	; 
 
 assignment : id '=' exp  { {installid($1,$3);} fprintf(yyout,"%s := %d;\n %s := %s;\n\n",reg[0],$3,$1,reg[0]); ; }

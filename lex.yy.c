@@ -362,12 +362,12 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[56] =
     {   0,
-        0,    0,   22,   20,   18,   18,   18,   20,   19,    2,
+        0,    0,   22,   20,   18,   18,   18,   20,   19,    1,
        16,   19,   19,   19,   17,   17,   17,   17,   17,   17,
-       17,    3,    7,   16,    8,    6,    9,   17,   13,   17,
-       17,   17,   17,    4,   17,   17,   17,   17,   17,   17,
-       11,   17,   17,   17,    5,   10,    1,   17,   17,   17,
-       14,   17,   12,   15,    0
+       17,    2,    6,   16,    7,    5,    8,   17,   12,   17,
+       17,   17,   17,    3,   17,   17,   17,   17,   17,   17,
+       10,   17,   17,   17,    4,    9,   13,   17,   17,   17,
+       14,   17,   11,   15,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -760,67 +760,67 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 10 "var.l"
-{return FACT;}
+{ 	return and; 	}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 11 "var.l"
-{ 	return and; 	}
+{ 	return or; 	}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 12 "var.l"
-{ 	return or; 	}
+{	return IF;	}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 13 "var.l"
-{	return IF;	}
+{	return ELSE;	}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 14 "var.l"
-{	return ELSE;	}
+{	return eq;	}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 15 "var.l"
-{	return eq;	}
+{	return ne;	}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 16 "var.l"
-{	return ne;	}
+{	return le;	}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 17 "var.l"
-{	return le;	}
+{	return ge;	}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 18 "var.l"
-{	return ge;	}
+{	return EXIT;	} 	
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 19 "var.l"
-{	return EXIT;	} 	
+{   return FOR;    }	
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 20 "var.l"
-{   return FOR;    }	
+{   return WHILE;   }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 21 "var.l"
-{   return WHILE;   }
+{   return DO;  }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 22 "var.l"
-{   return DO;  }
+{return FACT;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP

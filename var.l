@@ -7,7 +7,6 @@
 %}
 
 %%
-"fact"              {return FACT;}
 "&"				{ 	return and; 	}
 "|"				{ 	return or; 	}
 "if"				{	return IF;	}
@@ -20,6 +19,7 @@
 "for"               {   return FOR;    }	
 "while"             {   return WHILE;   }
 "do"                {   return DO;  }
+"fact"              {return FACT;}
 "print"				{	return print;	} 
 "ptable"			{ 	return ptable;	}
 [0-9]+				{	yylval.no=atoi(yytext) ; return num;	}
