@@ -32,9 +32,8 @@ char code[50];
 
 %token <var> id
 %token <no> num 
-%token print EXIT IF ELSE ptable FOR WHILE DO
-%type <no>  start exp assignment term condn for_statement while_statement do_statement
-%type <code> assignment_expr
+%token print EXIT IF ELSE ptable FOR WHILE DO FACT
+%type <no>  start exp assignment term condn for_statement while_statement do_statement factorial
 %start start
 %left and or 
 %left '>' '<' eq ne ge le 
@@ -60,7 +59,9 @@ start	: EXIT ';'		{exit(0);}
 	| start do_statement	{ ; }
 	| condn			{;}
 	| start condn		{;}
-        ;
+	|start factorial	{;}
+	|factorial	{;}
+	        ;
 
 
   for_statement : FOR '(' id '=' exp  ';' id '<' num ';' id '=' id '+' num ')' '{' print num ';' '}' 
@@ -130,17 +131,44 @@ start	: EXIT ';'		{exit(0);}
       ;
 
 do_statement	: DO '{' print exp ';' id '=' exp '+' exp ';' '}' WHILE '(' exp '<' exp ')' ';' 
-{ int n=$15;do{printf("Printing: %d\n",n);n=n+$10; }while(n<=$17);installid($6,n); 
+						{ int n=$15;
+						  do{printf("Printing: %d\n",n);
+						  n=n+$10; 
+						}while(n<=$17);
+						installid($6,n); 
 fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
 ;
 
-while_statement : WHILE '(' exp '>' exp ')' '{' print exp ';' exp '=' exp '-' exp ';' '}' {int loopvar=$11; while(loopvar>$5){if($9==$11){printf("Printing: %d\n",loopvar);}
-	else {printf("printing: %d\n",$9);} loopvar=loopvar-$15;}}
-	| WHILE '(' exp '<' exp ')' '{' print exp ';' exp '=' exp '+' exp ';' '}' {int loopvar=$11; 		while(loopvar<$5){if($9==$11){printf("Printing: %d\n",loopvar);}
-	else {printf("printing: %d\n",$9);} loopvar=loopvar+$15;}}
-	| WHILE '(' exp ne exp ')' '{' print exp ';' exp '=' exp '+' exp ';'  '}' {int loopvar=$11; 				while(loopvar!=$5){if($9==$11){printf("Printing: %d\n",loopvar);}
-	else {printf("printing: %d\n",$9);} loopvar=loopvar+$15;}}
+while_statement : WHILE '(' exp '>' exp ')' '{' print exp ';' exp '=' exp '-' exp ';' '}' 
+				  {int loopvar=$11; 
+				   while(loopvar>$5)
+				   {if($9==$11)
+				   		{printf("Printing: %d\n",loopvar);}
+					else 
+						{printf("printing: %d\n",$9);} 
+					loopvar=loopvar-$15;}
+				   }
 
+				| WHILE '(' exp '<' exp ')' '{' print exp ';' exp '=' exp '+' exp ';' '}' 
+					{int loopvar=$11; 		
+					 while(loopvar<$5)
+					 	{if($9==$11)
+					 		{printf("Printing: %d\n",loopvar);}
+						 else 
+						 	{printf("printing: %d\n",$9);} 
+						 loopvar=loopvar+$15;
+						}
+					}
+				| WHILE '(' exp ne exp ')' '{' print exp ';' exp '=' exp '+' exp ';'  '}' 
+					{int loopvar=$11; 				
+					 while(loopvar!=$5)
+					 	{if($9==$11)
+						 	{printf("Printing: %d\n",loopvar);}
+						 else 
+						 	{printf("printing: %d\n",$9);}
+						loopvar=loopvar+$15;
+						}
+					}
 	; 
 
 assignment : id '=' exp  { {installid($1,$3);} fprintf(yyout,"%s := %d;\n %s := %s;\n\n",reg[0],$3,$1,reg[0]); ; }
@@ -160,6 +188,14 @@ fprintf(yyout,"if z %s goto _LABEL;\n%s := %d;\nprint %s;\n_LABEL : else;\n%s :=
 fprintf(yyout,"if nz %s; \n%s := %d \nPrint %s",reg[0],reg[1],$7,reg[1]) ; } 
 
 	;
+
+factorial : id '=' FACT '(' num ')' ';' {int n = $5; int i; int f=1;
+											for(i=1;i<=n;i++)
+													{ f= f*i;
+													}
+													installid($1,f);}
+;
+
 
 exp    	: term                 { {$$ = $1;} /*fprintf(yyout,"%s := %d;\n ",reg[0],$1);*/ ; } 
        	| exp '+' exp          { {$$ = $1 + $3;} /*fprintf(yyout,"%s := %d + %d;\n ",reg[0],$1,$3);*/ ; } 

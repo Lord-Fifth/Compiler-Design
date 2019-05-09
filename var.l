@@ -7,6 +7,7 @@
 %}
 
 %%
+"fact"              {return FACT;}
 "&"				{ 	return and; 	}
 "|"				{ 	return or; 	}
 "if"				{	return IF;	}

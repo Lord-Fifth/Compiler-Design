@@ -55,12 +55,13 @@ extern int yydebug;
     FOR = 265,
     WHILE = 266,
     DO = 267,
-    and = 268,
-    or = 269,
-    eq = 270,
-    ne = 271,
-    ge = 272,
-    le = 273
+    FACT = 268,
+    and = 269,
+    or = 270,
+    eq = 271,
+    ne = 272,
+    ge = 273,
+    le = 274
   };
 #endif
 
@@ -75,7 +76,7 @@ int no;
 char var[10];
 char code[50];
 
-#line 79 "var.tab.h" /* yacc.c:1909  */
+#line 80 "var.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
