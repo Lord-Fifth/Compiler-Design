@@ -137,6 +137,14 @@ do_statement	: DO '{' print exp ';' id '=' exp '+' exp ';' '}' WHILE '(' exp '<'
 						}while(n<=$17);
 						installid($6,n); 
 fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
+
+				| DO '{' print exp ';' id '=' exp '-' exp ';' '}' WHILE '(' exp '>' exp ')' ';' 
+						{ int n=$15;
+						  do{printf("Printing: %d\n",n);
+						  n=n-$10; 
+						}while(n>=$17);
+						installid($6,n); 
+fprintf(yyout,"L1: print %s;\n%s := %s - %d;\n%s := %s;\n%s = %s >= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
 ;
 
 while_statement : WHILE '(' id '>' num ')' '{' print exp ';' exp '=' exp '-' num ';' '}' 
