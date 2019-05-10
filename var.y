@@ -180,14 +180,7 @@ fprintf(yyout,"L1: %s = %s < %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s
 						 	{printf("Printing: %d\n",$9);}
 						 loopvar=loopvar+$15;
 						}
-    	  fprintf(yyout,"L1: %s = %s ne %d; \n
-					         if (%s) goto L2;\n
-				   		     goto L3;\n
-			     		 L2: print %s;\n
-					   	    %s := %s + %d;\n
-				  			%s := %s;\n
-				 			goto L1;\n
-			   			 L3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
+    	  fprintf(yyout,"L1: %s = %s ne %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
 				  }
 	; 
 
@@ -214,6 +207,7 @@ factorial : id '=' FACT '(' num ')' ';' {int n = $5; int i; int f=1;
 													{ f= f*i;
 													}
 											installid($1,f);
+			fprintf(yyout,"%s := %d; \n%s := 1; \n\nL:%s := %s*%s; \n DEC %s \n if nz goto L; \n id := %s\n\n",reg[0],$5,reg[1],reg[1],reg[1],reg[0],reg[0],reg[1]);
 										}
 ;
 

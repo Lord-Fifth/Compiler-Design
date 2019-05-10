@@ -474,8 +474,8 @@ static const yytype_uint8 yyrline[] =
       54,    55,    56,    57,    58,    59,    60,    61,    62,    63,
       67,    75,    83,    91,    99,   107,   115,   123,   132,   140,
      149,   162,   174,   187,   189,   191,   194,   197,   200,   205,
-     214,   215,   216,   217,   218,   219,   220,   221,   222,   223,
-     224,   225,   226,   227,   228,   231,   232
+     215,   216,   217,   218,   219,   220,   221,   222,   223,   224,
+     225,   226,   227,   228,   229,   232,   233
 };
 #endif
 
@@ -1727,7 +1727,7 @@ fprintf(yyout,"L1: %s = %s < %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s
 						 	{printf("Printing: %d\n",(yyvsp[-8].no));}
 						 loopvar=loopvar+(yyvsp[-2].no);
 						}
-fprintf(yyout,"L1: %s = %s ne %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],(yyvsp[-14].var),(yyvsp[-12].no),reg[0],reg[0],reg[0],reg[0],(yyvsp[-2].no),(yyvsp[-14].var),reg[0]);
+    	  fprintf(yyout,"L1: %s = %s ne %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],(yyvsp[-14].var),(yyvsp[-12].no),reg[0],reg[0],reg[0],reg[0],(yyvsp[-2].no),(yyvsp[-14].var),reg[0]);
 				  }
 #line 1733 "var.tab.c" /* yacc.c:1646  */
     break;
@@ -1780,114 +1780,115 @@ fprintf(yyout,"if nz %s; \n%s := %d \nPrint %s",reg[0],reg[1],(yyvsp[-2].no),reg
 													{ f= f*i;
 													}
 											installid((yyvsp[-6].var),f);
+			fprintf(yyout,"%s := %d; \n%s := 1; \n\nL:%s := %s*%s; \n DEC %s \n if nz goto L; \n id := %s\n\n",reg[0],(yyvsp[-2].no),reg[1],reg[1],reg[1],reg[0],reg[0],reg[1]);
 										}
-#line 1785 "var.tab.c" /* yacc.c:1646  */
+#line 1786 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 214 "var.y" /* yacc.c:1646  */
+#line 215 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[0].no);} /*fprintf(yyout,"%s := %d;\n ",reg[0],$1);*/ ; }
-#line 1791 "var.tab.c" /* yacc.c:1646  */
+#line 1792 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 215 "var.y" /* yacc.c:1646  */
+#line 216 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[-2].no) + (yyvsp[0].no);} /*fprintf(yyout,"%s := %d + %d;\n ",reg[0],$1,$3);*/ ; }
-#line 1797 "var.tab.c" /* yacc.c:1646  */
+#line 1798 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 216 "var.y" /* yacc.c:1646  */
+#line 217 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[-2].no) - (yyvsp[0].no);} /*fprintf(yyout,"%s := %d - %d;\n ",reg[0],$1,$3);*/ ; }
-#line 1803 "var.tab.c" /* yacc.c:1646  */
+#line 1804 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 217 "var.y" /* yacc.c:1646  */
+#line 218 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[-2].no) * (yyvsp[0].no);} /*fprintf(yyout,"%s := %d * %d;\n ",reg[0],$1,$3);*/ ; }
-#line 1809 "var.tab.c" /* yacc.c:1646  */
+#line 1810 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 218 "var.y" /* yacc.c:1646  */
+#line 219 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[-2].no) / (yyvsp[0].no);} /*fprintf(yyout,"%s := %d / %d;\n ",reg[0],$1,$3);*/ ; }
-#line 1815 "var.tab.c" /* yacc.c:1646  */
+#line 1816 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 219 "var.y" /* yacc.c:1646  */
+#line 220 "var.y" /* yacc.c:1646  */
     { {(yyval.no)= (yyvsp[-2].no) % (yyvsp[0].no);}}
-#line 1821 "var.tab.c" /* yacc.c:1646  */
+#line 1822 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 220 "var.y" /* yacc.c:1646  */
+#line 221 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),1);} /*fprintf(yyout,"%s := %c > %d;\n ",reg[0],$1,$3); */;}
-#line 1827 "var.tab.c" /* yacc.c:1646  */
+#line 1828 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 221 "var.y" /* yacc.c:1646  */
+#line 222 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),2);} /*fprintf(yyout,"%s := %c < %d;\n ",reg[0],$1,$3); */;}
-#line 1833 "var.tab.c" /* yacc.c:1646  */
+#line 1834 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 222 "var.y" /* yacc.c:1646  */
+#line 223 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),3);} /*fprintf(yyout,"%s := %c eq %d;\n ",reg[0],$1,$3); */;}
-#line 1839 "var.tab.c" /* yacc.c:1646  */
+#line 1840 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 223 "var.y" /* yacc.c:1646  */
+#line 224 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),4);} /*fprintf(yyout,"%s := %c neq %d;\n ",reg[0],$1,$3); */;}
-#line 1845 "var.tab.c" /* yacc.c:1646  */
+#line 1846 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 224 "var.y" /* yacc.c:1646  */
+#line 225 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),5);} /*fprintf(yyout,"%s := %c ge %d;\n ",reg[0],$1,$3); */;}
-#line 1851 "var.tab.c" /* yacc.c:1646  */
+#line 1852 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 225 "var.y" /* yacc.c:1646  */
+#line 226 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),6);} /*fprintf(yyout,"%s := %c le %d;\n ",reg[0],$1,$3); */;}
-#line 1857 "var.tab.c" /* yacc.c:1646  */
+#line 1858 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 226 "var.y" /* yacc.c:1646  */
+#line 227 "var.y" /* yacc.c:1646  */
     { {(yyval.no) = (yyvsp[-1].no);} /*fprintf(yyout,"%s := %d;\n ",reg[0],$2); */;}
-#line 1863 "var.tab.c" /* yacc.c:1646  */
+#line 1864 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 227 "var.y" /* yacc.c:1646  */
+#line 228 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),7);} /*fprintf(yyout,"%s := %c and %d;\n ",reg[0],$1,$3);*/ ;}
-#line 1869 "var.tab.c" /* yacc.c:1646  */
+#line 1870 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 228 "var.y" /* yacc.c:1646  */
+#line 229 "var.y" /* yacc.c:1646  */
     { {(yyval.no) =relop((yyvsp[-2].no),(yyvsp[0].no),8);} /*fprintf(yyout,"%s := %c or %d;\n ",reg[0],$1,$3);*/ ;}
-#line 1875 "var.tab.c" /* yacc.c:1646  */
+#line 1876 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 231 "var.y" /* yacc.c:1646  */
+#line 232 "var.y" /* yacc.c:1646  */
     {(yyval.no) = (yyvsp[0].no);}
-#line 1881 "var.tab.c" /* yacc.c:1646  */
+#line 1882 "var.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 232 "var.y" /* yacc.c:1646  */
+#line 233 "var.y" /* yacc.c:1646  */
     {(yyval.no)=getid((yyvsp[0].var));}
-#line 1887 "var.tab.c" /* yacc.c:1646  */
+#line 1888 "var.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1891 "var.tab.c" /* yacc.c:1646  */
+#line 1892 "var.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2115,7 +2116,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 234 "var.y" /* yacc.c:1906  */
+#line 235 "var.y" /* yacc.c:1906  */
 
 int relop(int a , int b ,int op)
 {
