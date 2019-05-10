@@ -71,6 +71,7 @@ start	: EXIT ';'		{exit(0);}
 	                  	val=val+inc;
 	           			printf("Printing %d\n",val2);  
                           }
+		fprintf(yyout,"%s := %d;\ni := %s;\n\nL1: Check %s := %s < %d\n if(%s) goto L2;\n goto L3;\nL2: %s := %s + %d;\n print %d\n goto L1;\n L3: ",reg[0],$5,reg[0],reg[1],reg[0],$9,reg[1],reg[0],reg[0],$15,$19);
 		          }
      | FOR '(' id '=' exp  ';' id le num ';' id '=' id '+' num ')' '{' print num ';' '}' 
         {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
@@ -79,6 +80,7 @@ start	: EXIT ';'		{exit(0);}
 	                  	val=val+inc;
 	           			printf("Printing %d\n",val2);  
                           }
+		fprintf(yyout,"%s := %d;\ni := %s;\n\nL1: Check %s := %s le %d\n if(%s) goto L2;\n goto L3;\nL2: %s := %s + %d;\n print %d\n goto L1;\n L3: ",reg[0],$5,reg[0],reg[1],reg[0],$9,reg[1],reg[0],reg[0],$15,$19);
 		          }
       | FOR '(' id '=' exp  ';' id '>' num ';' id '=' id '-' num ')' '{' print num ';' '}' 
         {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
@@ -87,6 +89,7 @@ start	: EXIT ';'		{exit(0);}
 	                  	val=val-inc;
 	           			printf("Printing %d\n",val2);  
                           }
+		fprintf(yyout,"%s := %d;\ni := %s;\n\nL1: Check %s := %s > %d\n if(%s) goto L2;\n goto L3;\nL2: %s := %s - %d;\n print %d\n goto L1;\n L3: ",reg[0],$5,reg[0],reg[1],reg[0],$9,reg[1],reg[0],reg[0],$15,$19);
 		          }
      | FOR '(' id '=' exp  ';' id ge num ';' id '=' id '-' num ')' '{' print num ';' '}' 
         {  {installid($3,$5);} val=getid($3);val1=$9;val2=$19; inc=$15; 
@@ -95,6 +98,7 @@ start	: EXIT ';'		{exit(0);}
 	                  	val=val-inc;
 	           			printf("Printing %d\n",val2);  
                           }
+		fprintf(yyout,"%s := %d;\ni := %s;\n\nL1: Check %s := %s ge %d\n if(%s) goto L2;\n goto L3;\nL2: %s := %s - %d;\n print %d\n goto L1;\n L3: ",reg[0],$5,reg[0],reg[1],reg[0],$9,reg[1],reg[0],reg[0],$15,$19);
 		          }
      | FOR '(' id '=' exp  ';' id '<' num ';' id '=' id '+' num ')' '{' print id ';' '}' 
         {  {installid($3,$5);} val=getid($3);val1=$9;val2=getid($19); inc=$15; 
@@ -135,7 +139,7 @@ do_statement	: DO '{' print exp ';' id '=' exp '+' exp ';' '}' WHILE '(' exp '<'
 						  n=n+$10; 
 						}while(n<=$17);
 						installid($6,n); 
-fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
+				fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
 
 				| DO '{' print exp ';' id '=' exp '-' exp ';' '}' WHILE '(' exp '>' exp ')' ';' 
 						{ int n=$15;
@@ -143,7 +147,7 @@ fprintf(yyout,"L1: print %s;\n%s := %s + %d;\n%s := %s;\n%s = %s <= %d; \nif (%s
 						  n=n-$10; 
 						}while(n>=$17);
 						installid($6,n); 
-fprintf(yyout,"L1: print %s;\n%s := %s - %d;\n%s := %s;\n%s = %s >= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
+				fprintf(yyout,"L1: print %s;\n%s := %s - %d;\n%s := %s;\n%s = %s >= %d; \nif (%s) goto L1;\n\n",reg[0],reg[0],reg[0],$10,$6,reg[0],reg[1],$6,$17,reg[1]);}
 ;
 
 while_statement : WHILE '(' id '>' num ')' '{' print exp ';' exp '=' exp '-' num ';' '}' 
