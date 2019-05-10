@@ -69,7 +69,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val<val1;  )
                           {  
 	                  	val=val+inc;
-	           		printf("%d",val2); 
+	           			printf("Printing %d\n",val2);  
                           }
 		          }
      | FOR '(' id '=' exp  ';' id le num ';' id '=' id '+' num ')' '{' print num ';' '}' 
@@ -77,7 +77,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val<=val1;  )
                           {  
 	                  	val=val+inc;
-	           		printf("%d",val2); 
+	           			printf("Printing %d\n",val2);  
                           }
 		          }
       | FOR '(' id '=' exp  ';' id '>' num ';' id '=' id '-' num ')' '{' print num ';' '}' 
@@ -85,7 +85,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val>val1;  )
                           {  
 	                  	val=val-inc;
-	           		printf("%d",val2); 
+	           			printf("Printing %d\n",val2);  
                           }
 		          }
      | FOR '(' id '=' exp  ';' id ge num ';' id '=' id '-' num ')' '{' print num ';' '}' 
@@ -93,7 +93,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val>=val1;  )
                           {  
 	                  	val=val-inc;
-	           		printf("%d",val2); 
+	           			printf("Printing %d\n",val2);  
                           }
 		          }
      | FOR '(' id '=' exp  ';' id '<' num ';' id '=' id '+' num ')' '{' print id ';' '}' 
@@ -101,7 +101,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val<val1;  )
                           {  
 	                  	val=val+inc;
-	           		printf("%d",val); 
+	           			printf("Printing %d\n",val); 
                           }
 		          }
      | FOR '(' id '=' exp  ';' id le num ';' id '=' id '+' num ')' '{' print id ';' '}' 
@@ -109,7 +109,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val<=val1;  )
                           {  
 	                  	val=val+inc;
-	           		printf("%d",val); 
+	           			printf("Printing %d\n",val);  
                           }
 		          }
       | FOR '(' id '=' exp  ';' id '>' num ';' id '=' id '-' num ')' '{' print id ';' '}' 
@@ -117,7 +117,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val>val1;  )
                           {  
 	                  	val=val-inc;
-	           		    printf("%d",val); 
+	           		    printf("Printing %d\n",val); 
                           }
 		          }
      | FOR '(' id '=' exp  ';' id ge num ';' id '=' id '-' num ')' '{' print id ';' '}' 
@@ -125,8 +125,7 @@ start	: EXIT ';'		{exit(0);}
                            for(;val>=val1;  )
                           {  
 	                  	val=val-inc;
-	           		printf("%d",val); 
-                          }
+						printf("Printing %d\n",val);                           }
 		          }
       ;
 
@@ -153,7 +152,7 @@ while_statement : WHILE '(' id '>' num ')' '{' print exp ';' exp '=' exp '-' num
 				   {if($9==$11)
 				   		{printf("Printing: %d\n",loopvar); }
 					else 
-						{printf("printing: %d\n",$9);} 
+						{printf("Printing: %d\n",$9);} 
 				    loopvar=loopvar-$15;
 				   } 
 
@@ -166,7 +165,7 @@ fprintf(yyout,"L1: %s = %s > %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s
 				   {if($9==$11)
 				   		{printf("Printing: %d\n",loopvar);}
 					else 
-						{printf("printing: %d\n",$9);} 
+						{printf("Printing: %d\n",$9);} 
 					loopvar=loopvar+$15;
 				   }
 fprintf(yyout,"L1: %s = %s < %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
@@ -178,10 +177,17 @@ fprintf(yyout,"L1: %s = %s < %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s
 				   		{if($9==$11)
 				   			{printf("Printing: %d\n",loopvar);}
 						 else 
-						 	{printf("printing: %d\n",$9);}
+						 	{printf("Printing: %d\n",$9);}
 						 loopvar=loopvar+$15;
 						}
-fprintf(yyout,"L1: %s = %s ne %d; \nif (%s) goto L2;\ngoto L3;\nL2: print %s;\n%s := %s + %d;\n%s := %s;\ngoto L1;\nL3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
+    	  fprintf(yyout,"L1: %s = %s ne %d; \n
+					         if (%s) goto L2;\n
+				   		     goto L3;\n
+			     		 L2: print %s;\n
+					   	    %s := %s + %d;\n
+				  			%s := %s;\n
+				 			goto L1;\n
+			   			 L3:\n\n",reg[0],$3,$5,reg[0],reg[0],reg[0],reg[0],$15,$3,reg[0]);
 				  }
 	; 
 
@@ -207,7 +213,8 @@ factorial : id '=' FACT '(' num ')' ';' {int n = $5; int i; int f=1;
 											for(i=1;i<=n;i++)
 													{ f= f*i;
 													}
-													installid($1,f);}
+											installid($1,f);
+										}
 ;
 
 
